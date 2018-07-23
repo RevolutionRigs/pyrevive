@@ -259,10 +259,9 @@ class Revive:
 
                 # Test and make sure that all settings are integers
                 for key, val in test.iteritems():
-                    try:
-                        val = int(val)
-                    except:
-                        raise Exception("%s value '%s' is not an integer.") % (key, val)
+                    if not isinstance(val, int):
+                        error = "%s value '%s' is not an integer." % (key, val)
+                        raise Exception(error)
 
                 # Create a dictionary with the watchdog settings
                 settings = {
