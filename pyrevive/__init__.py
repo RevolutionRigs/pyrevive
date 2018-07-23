@@ -49,7 +49,7 @@ class Revive:
             if method not in METHODS:
                 raise Exception("Unsupported HTTP method: " + method)
 
-            print("%s -> %s -> %s -> %s") % (method, url + uri, payload, headers)
+            #print("%s -> %s -> %s -> %s") % (method, url + uri, payload, headers)
 
             try:
                 response = requests.request(method, url + uri, data=payload, headers=headers)
