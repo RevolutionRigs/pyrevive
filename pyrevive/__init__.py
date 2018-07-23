@@ -106,7 +106,7 @@ class Revive:
 
         def auth(self):
             """Check Revive Device key"""
-            payload = '{ "login": true }'
+            payload = json.dumps({ "login": True })
             return self.request("POST", "/v1/api/device/auth", payload)
 
         def id(self):
@@ -140,7 +140,9 @@ class Revive:
 
             """
 
-            request = self.request("PATCH", "/v1/api/rig/update", json.dumps(payload))
+            # Convert dict to JSON for the PATCH request
+            payload = json.dumps(payload)
+            request = self.request("PATCH", "/v1/api/rig/update", payload)
             return request
 
         def get(self, port="all"):
