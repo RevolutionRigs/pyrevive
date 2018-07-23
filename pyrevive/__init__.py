@@ -231,15 +231,64 @@ class Revive:
 
         class Watchdog:
             """
+            Revive API watchdog configuration:
+
+                Sets variables:
+                    revive.config.watchdog.settings          [dictionary]
+
+                    revive.config.watchdog.pingInterval      [integer/rw]
+                    revive.config.watchdog.firstResetAfter   [integer/rw]
+                    revive.config.watchdog.anotherResetEvery [integer/rw]
             """
 
+            # Initialize with the watchdog settings pulled from parent class
             def __init__(self, parent):
-                """
-                """
+                self.parent            = parent
+                self.settings          = self.parent.settings["watchdog"]
 
+                self.pingInterval      = self.settings["pingInterval"]
+                self.firstResetAfter   = self.settings["firstResetAfter"]
+                self.anotherResetEvery = self.settings["anotherResetEvery"]
 
+            # Writes all settings back to the Revive via a PATCH request
+            # revive.config.watchdog.save()
             def save(self):
-                """Write all watchdog settings back to the device"""
+                """Write all of the watchdog settings back to the device"""
+
+                test = { "pingInterval": self.pingInterval, "firstResetAfter": self.firstResetAfter, "anotherResetEvery": self.anotherResetEvery }
+
+                # Test and make sure that all settings are integers
+                for key, val in test.iteritems():
+                    try:
+                        val = int(val)
+                    except:
+                        raise Exception("%s value '%s' is not an integer.") % (key, val)
+
+                # Create a dictionary with the watchdog settings
+                settings = {
+                    "watchdog": {
+                        "pingInterval": int(self.pingInterval),
+                        "firstResetAfter": int(self.firstResetAfter),
+                        "anotherResetEvery": int(self.anotherResetEvery)
+                    }
+                }
+
+                # Then convert it to JSON for the PATCH request to the API
+                settings = json.dumps(settings)
+
+                # PATCH to /v1/api/config/update with JSON settings payload
+                request = self.parent.request("PATCH", "/v1/api/config/update", settings)
+
+                return request
+
+
+
+            # Print out the Revive network settings all pretty like
+            def show(self):
+                """Show the Revive watchdog settings"""
+                print "Ping Interval:       %d" % self.pingInterval
+                print "First Reset After:   %d" % self.firstResetAfter
+                print "Another Reset Every: %d" % self.anotherResetEvery
 
 
 # EOF
