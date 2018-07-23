@@ -48,7 +48,7 @@ class Revive:
             except:
                 raise Exception
 
-            print parsed
+            return parsed
 
 
     class Power:
@@ -137,75 +137,99 @@ class Revive:
         def __init__(self):
             """
             """
-            self.device   = self.Device()
-            self.network  = self.Network()
-            self.watchdog = self.Watchdog()
-            self.settings = self.get()
+            self.settings = self.settings()
+            #self.api      = self.settings["data"]["api"]
+            #self.device   = self.settings["data"]["device"]
+            self.network  = self.Network(self) # self.settings["data"]["network"]
+            self.watchdog = self.Watchdog(self) #self.settings["data"]["watchdog"]
 
-        def get(self):
-            print("Getting Config JSON")
+        def settings(self):
             # GET /v1/api/config/get
-            # settings = json.loads(request.text)
-            # return settings
+            request  = self.request("GET", "/v1/api/config/get")
+            settings = json.loads(request)
+            return settings["data"]
 
 
-        class Device:
-            """
-            """
-
-            def __init__(self):
-                """
-                """
-                # This way probably --=v
-                # self.settings = super(Config, self).settings["device"]
-
-                # self.configurationDone  = super(Config, self).settings["device"]["configurationDone"]
-
-            def save(self):
-                """Write all device settings back to the device"""
-
-            def show(self):
-                print "configurationDone: " + self.configurationdone
-
-
+        # Revive.Config.Network Class
         class Network:
             """
+            Revive API network configuration:
+
+                Sets:
+                    revive.config.network.settings     [dictionary]
+
+                    revive.config.network.mode         [string/rw]
+                    revive.config.network.ip           [string/rw]
+                    revive.config.network.netmask      [string/rw]
+                    revive.config.network.gateway      [string/rw]
+                    revive.config.network.primaryDNS   [string/rw]
+                    revive.config.network.secondaryDNS [string/rw]
             """
 
-            def __init__(self):
-                # This way probably --=v
+            # Initialize with the network settings pulled from parent class
+            def __init__(self, parent):
+                self.parent       = parent
+                self.settings     = self.parent.settings["network"]
 
-                # self.ip = super(Config, self).settings["network"]["ip"]
+                self.mode         = self.settings["mode"]
+                self.ip           = self.settings["ip"]
+                self.netmask      = self.settings["netmask"]
+                self.gateway      = self.settings["gateway"]
+                self.primaryDNS   = self.settings["primaryDNS"]
+                self.secondaryDNS = self.settings["secondaryDNS"]
 
-                # self.ip = super(Config, self).get("ip")
-                # self.netmask = super(Config, self).get("netmask")
-                # self.gateway = super(Config, self).get("gateway")
-                # self.primarydns = super(Config, self).get("primarydns")
-                # self.secondarydns = super(Config, self).get("secondarydns")
-
-                # settings = super(Config, self).get("network")
-                self.ip = "192.168.1.254"
-                self.netmask = "255.255.255.0"
-                self.gateway = "192.168.1.1"
-                self.primarydns = "8.8.8.8"
-                self.secondarydns = "8.8.4.4"
-
+            # Writes all settings back to the Revive via a PATCH request
+            # revive.config.network.save()
             def save(self):
                 """Write all of the network settings back to the device"""
 
+                # Accept either: dhcp or manual
+                if self.mode.lower() not in [ "dhcp", "manual" ]:
+                    raise Exception("Invalid mode.  Valid modes: dhcp, manual")
+
+                # Simple JSON if we are doing DHCP
+                if self.mode.lower() == "dhcp":
+                    settings = json.dumps({ "network": { "mode": "dhcp" } })
+
+                # Build out the dict with the settings
+                else:
+                    settings = {
+                        "network": {
+                            "mode": "manual",
+                            "ip": self.ip,
+                            "netmask": self.netmask,
+                            "gateway": self.gateway,
+                            "primaryDNS": self.primaryDNS,
+                            "secondaryDNS": self.secondaryDNS
+                        }
+                    }
+
+                    # Then convert it to JSON for the PATCH request to the API
+                    settings = json.dumps(settings)
+
+                # PATCH to /v1/api/config/update with JSON settings payload
+                request = self.parent.request("PATCH", "/v1/api/config/update", settings)
+
+                return request
+
+
+
+            # Print out the Revive network settings all pretty like
             def show(self):
+                """Show the Revive network settings"""
                 print "IP address:    " + self.ip
                 print "Netmask:       " + self.netmask
                 print "Gateway:       " + self.gateway
                 print "Primary DNS:   " + self.primarydns
                 print "Secondary DNS: " + self.secondarydns
+                print "Mode:          " + self.mode
 
 
         class Watchdog:
             """
             """
 
-            def __init__(self):
+            def __init__(self, parent):
                 """
                 """
 
