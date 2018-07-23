@@ -111,26 +111,57 @@ class Revive:
 
     class Rig(Connect):
         """
+        Revive API rig update object.  Provides:
+            revive.rig.update(payload)
+            revive.rig.get()
         """
 
-        def __init__(self):
+        def update(self, payload):
             """
+            Updates the port information.  Takes a dictionary as input.  Possible fields are:
+
+                port (int, 1-16, required) - physical port which will be updated. We don't have rig id, instead we use this port number
+                name (char)                - Name of the rig
+                ip (IP address)            - IP address of the rig, used when mode is set to watchdog
+                maintenance (boolean)      - Not used for now
+                mode (char, manual|watchdog|api)
+
+
+                payload = { "port": 1, "name": "RIG #1", "ip": "192.168.1.1", "mode": "watchdog", "maintenance": false }
+
             """
 
-        def update(self, port):
-            """
-            """
-            print("Updating rig: %2s") % port
+            request = self.request("PATCH", "/v1/api/rig/update", json.dumps(payload))
+            return request
 
-        def get(self):
+        def get(self, port="all"):
             """
-            """
-            print("Getting info for rig: %2s") % port
+            Revive API rig information fetcher
 
-        def info(self):
+                Expects:
+                    No argument or "all": Pulls info on all ports
+                    Integer 1-16: Pulls the information for that port
             """
-            """
-            self.get()
+            # Port must be "all" or an integer 1-16
+            if port not in range(1,17) and port != "all":
+                error = "Invalid port '%s'.  Valid ports: all, 1-16" % port
+                raise Exception(error)
+
+            # Get all port information
+            if port == "all":
+                api = "/v1/api/rig/get/"
+
+            # Get a single port's information
+            else:
+                api = "/v1/api/rig/get/" + str(port)
+
+            request  = self.request("GET", api)
+            settings = json.loads(request)
+
+            # Set the self.settings to the JSON parsed dictionary
+            self.settings = settings["data"]
+
+            return request
 
 
     # Revive.Config Class
