@@ -9,6 +9,15 @@ def connect(host, key):
 
 class Revive:
     """
+    Revive API parent class.  Takes two arguments to initialize:
+        host[:port]   : Hostname/IP and optional port
+        key           : Revive authorization key found on bottom of deviceSubclasses provided:
+
+    Creates sub-classes:
+        revive.rig    : Rig()
+        revive.power  : Power()
+        revive.config : Config()
+        revive.device : Device()
     """
 
 
