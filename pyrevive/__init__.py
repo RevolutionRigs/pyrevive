@@ -130,23 +130,27 @@ class Revive:
             self.get()
 
 
+    # Revive.Config Class
     class Config(Connect):
         """
+        Revive API configuration class
+
+            Creates subclasses:
+                revive.config.network
+                revive.config.watchdog
         """
 
         def __init__(self):
-            """
-            """
-            self.settings = self.settings()
-            #self.api      = self.settings["data"]["api"]
-            #self.device   = self.settings["data"]["device"]
-            self.network  = self.Network(self) # self.settings["data"]["network"]
-            self.watchdog = self.Watchdog(self) #self.settings["data"]["watchdog"]
+            self.settings = self.settings()     # All settings from Revive
+            self.network  = self.Network(self)  # revive.config.network class
+            self.watchdog = self.Watchdog(self) # revive.config.watchdog class
 
         def settings(self):
             # GET /v1/api/config/get
             request  = self.request("GET", "/v1/api/config/get")
             settings = json.loads(request)
+
+            # Everything we care about is under data: { }
             return settings["data"]
 
 
@@ -155,7 +159,7 @@ class Revive:
             """
             Revive API network configuration:
 
-                Sets:
+                Sets variables:
                     revive.config.network.settings     [dictionary]
 
                     revive.config.network.mode         [string/rw]
@@ -217,12 +221,12 @@ class Revive:
             # Print out the Revive network settings all pretty like
             def show(self):
                 """Show the Revive network settings"""
+                print "Mode:          " + self.mode
                 print "IP address:    " + self.ip
                 print "Netmask:       " + self.netmask
                 print "Gateway:       " + self.gateway
                 print "Primary DNS:   " + self.primarydns
                 print "Secondary DNS: " + self.secondarydns
-                print "Mode:          " + self.mode
 
 
         class Watchdog:
