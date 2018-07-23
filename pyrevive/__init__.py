@@ -84,13 +84,16 @@ class Revive:
             print("Powering off rig: %2s") % port
 
 
+    # Revive.Device Class
     class Device(Connect):
         """
-        """
+        Revive API device calls:
 
-        def __init__(self):
-            """
-            """
+            Provides methods:
+                revive.device.auth()
+                revive.device.id()
+                revive.device.hello()
+        """
 
         def auth(self):
             """Check Revive Device key"""
