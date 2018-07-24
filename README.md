@@ -2,7 +2,7 @@
 ## Revive Hardware Restarter API Library
 This Python package is meant for interfacing with the Revive Hardware Restarter HTTP API.  Revive is a hardware restarter and monitor for cryptocurrency mining rigs.
 
-You can find out more and buy one here: https://revolutionrigs.com/revive
+You can find out more and buy one [here](https://revolutionrigs.com/revive)
 
 If you find this library helpful, donations are greatly appreciated:
 
