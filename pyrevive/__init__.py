@@ -13,19 +13,19 @@ class Revive:
     """
 
     def __init__(self, host, key):
-    """
-    Revive API parent class.  Takes two arguments to initialize:
-        host[:port]   : Hostname/IP and optional port
-        key           : Revive authorization key found on bottom of deviceSubclasses provided:
+        """
+        Revive API parent class.  Takes two arguments to initialize:
+            host[:port]   : Hostname/IP and optional port
+            key           : Revive authorization key found on bottom of deviceSubclasses provided:
 
-    Creates sub-classes:
-        revive.rig    : Rig()
-        revive.power  : Power()
-        revive.config : Config()
-        revive.device : Device()
-    """
+        Creates sub-classes:
+            revive.rig    : Rig()
+            revive.power  : Power()
+            revive.config : Config()
+            revive.device : Device()
+        """
 
-       global url
+        global url
         global headers
 
         self.host = host
@@ -52,7 +52,7 @@ class Revive:
             if method not in METHODS:
                 raise Exception("Unsupported HTTP method: " + method)
 
-            print("%s -> %s -> %s -> %s") % (method, url + uri, payload, headers)
+            #print("%s -> %s -> %s -> %s") % (method, url + uri, payload, headers)
 
             try:
                 response = requests.request(method, url + uri, data=payload, headers=headers)
@@ -277,12 +277,12 @@ class Revive:
             # Print out the Revive network settings all pretty like
             def show(self):
                 """Show the Revive network settings"""
-                print "Mode:          " + self.mode
-                print "IP address:    " + self.ip
-                print "Netmask:       " + self.netmask
-                print "Gateway:       " + self.gateway
-                print "Primary DNS:   " + self.primarydns
-                print "Secondary DNS: " + self.secondarydns
+                print("mode:         " + self.mode)
+                print("ip:           " + self.ip)
+                print("netmask:      " + self.netmask)
+                print("gateway:      " + self.gateway)
+                print("primaryDNS:   " + self.primaryDNS)
+                print("secondaryDNS: " + self.secondaryDNS)
 
 
         class Watchdog:
@@ -341,9 +341,9 @@ class Revive:
             # Print out the Revive network settings all pretty like
             def show(self):
                 """Show the Revive watchdog settings"""
-                print "Ping Interval:       %d" % self.pingInterval
-                print "First Reset After:   %d" % self.firstResetAfter
-                print "Another Reset Every: %d" % self.anotherResetEvery
+                print("pingInterval:      " + str(self.pingInterval))
+                print("firstResetAfter:   " + str(self.firstResetAfter))
+                print("anotherResetEvery: " + str(self.anotherResetEvery))
 
 
 # EOF
