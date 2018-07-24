@@ -1,13 +1,18 @@
 import json
 import requests
 
-METHODS = [ "GET", "POST", "PATCH" ]
+METHODS = [ "GET", "POST", "PATCH" ] # Allowed HTTP methods
 
 def connect(host, key):
     """Initializes Revive API object"""
     return Revive(host, key)
 
 class Revive:
+    """
+    Revive API parent class.
+    """
+
+    def __init__(self, host, key):
     """
     Revive API parent class.  Takes two arguments to initialize:
         host[:port]   : Hostname/IP and optional port
@@ -20,9 +25,7 @@ class Revive:
         revive.device : Device()
     """
 
-
-    def __init__(self, host, key):
-        global url
+       global url
         global headers
 
         self.host = host
@@ -49,7 +52,7 @@ class Revive:
             if method not in METHODS:
                 raise Exception("Unsupported HTTP method: " + method)
 
-            #print("%s -> %s -> %s -> %s") % (method, url + uri, payload, headers)
+            print("%s -> %s -> %s -> %s") % (method, url + uri, payload, headers)
 
             try:
                 response = requests.request(method, url + uri, data=payload, headers=headers)
@@ -60,21 +63,23 @@ class Revive:
             return parsed
 
 
-    class Power:
+    class Power(Connect):
         """
+        Revive API for power on/off/restart to ports.  Provides methods:
+            port - Integer 1-16
+                revive.reset(port)
+                revive.cycle(port)
+                revive.restart(port)
+                revive.on(port)
+                revive.off(port)
         """
-
-        # foo = "{ "login": %s }" % ( "true" )
-
-        def __init__(self):
-            """
-            """
-            #self.port = port
-            #self.rig  = port
 
         def reset(self, port):
             """Restart rig"""
-            print("Restarting rig: %2s") % port
+            payload = json.dumps({ "port": int(port) })
+            request = self.request("POST", "/v1/api/restarter/reset", payload)
+
+            return request
 
         def restart(self, port):
             """Restart rig"""
@@ -86,11 +91,17 @@ class Revive:
 
         def on(self, port):
             """Power rig ON"""
-            print("Powering on rig: %2s") % port
+            payload = json.dumps({ "port": int(port) })
+            request = self.request("POST", "/v1/api/restarter/on", payload)
+
+            return request
 
         def off(self, port):
             """Power rig OFF"""
-            print("Powering off rig: %2s") % port
+            payload = json.dumps({ "port": int(port) })
+            request = self.request("POST", "/v1/api/restarter/off", payload)
+
+            return request
 
 
     # Revive.Device Class
