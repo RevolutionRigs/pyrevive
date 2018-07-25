@@ -6,6 +6,14 @@ You can find out more and buy one [here](https://revolutionrigs.com/revive)
 
 If you find this library helpful, donations are greatly appreciated:
 
+* Ethereum: 0x7472a4812200fc320793a946f027d559e63b164d
+* Ethereum Classic: 0x20282a304c20399b6534cef6196a99978cb89588
+* Bitcoin: 1LvnfMGfz8xTaZgi25DiRFaJoFvpAPncT5
+* Bitcoin Cash: 1Ec3CPq3WPsWT7fQaDGgTYkVPNtMZ3CVaA
+* Litecoin: LSZBbS7EsKnjXQ1FKxYuAmR5quzEazXfm1
+* Electroneum: etnk3yDpybAEBqz3nq63qmev4thRi9eFH64CVKzZc2w3A7vehpZkGvd97uSWxtmtAwjTnfKEp9Rup3md7nZyu9Q49VzZQKhxWN
+
+
 ### Installing using PIP
 ```
 pip install pyrevive
