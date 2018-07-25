@@ -1,6 +1,7 @@
 import json
 import requests
 
+VERSION = "0.0.4"
 METHODS = [ "GET", "POST", "PATCH" ] # Allowed HTTP methods
 
 def connect(host, key):
@@ -32,6 +33,7 @@ class Revive:
         self.key  = key
         self.url  = "http://" + host
         self.headers = { "Authorization": "Bearer " + self.key, "Content-Type": "application/json" }
+        self.version = VERSION
 
         url = "http://" + host
         headers = { "Authorization": "Bearer " + self.key, "Content-Type": "application/json" }
@@ -240,7 +242,7 @@ class Revive:
 
             # Writes all settings back to the Revive via a PATCH request
             # revive.config.network.save()
-            def save(self):
+            def save(self, settings=False):
                 """Write all of the network settings back to the device"""
 
                 # Accept either: dhcp or manual
