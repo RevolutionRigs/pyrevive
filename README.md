@@ -46,6 +46,13 @@ The authorization key can be found on the bottom of your Revive.
 revive = pyrevive.connect("192.168.1.254", "authorizationKey")
 ````
 
+### Version
+Get the current version of PyRevive
+
+```
+print(revive.version)
+```
+
 ### Power
 Perform power on, off, reset functions on a Revive port (aka rig)
 
