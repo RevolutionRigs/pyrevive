@@ -1,10 +1,12 @@
 from setuptools import setup
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+from os import path
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(name='pyrevive',
-    version='0.1',
+    version='0.0.4',
     description='Revive Hardware Restarter API Library',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -12,6 +14,6 @@ setup(name='pyrevive',
     author='Revolution Rigs',
     author_email='nathan@revolutionrigs.com',
     license='GNU v3.0',
-    packages=['pyrevive'],
+    packages=[ 'pyrevive' ],
     install_requires=[ 'requests' ],
     zip_safe=False)
