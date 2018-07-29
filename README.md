@@ -136,12 +136,14 @@ Retrieves and sets network and watchdog information on the Revive.
 #### Config.Network
 The revive.config.network object sets the following read-write variables:
 
+```
 * revive.config.network.mode
 * revive.config.network.ip
 * revive.config.network.netmask
 * revive.config.network.gateway
 * revive.config.network.primaryDNS
 * revive.config.network.secondaryDNS
+```
 
 ##### Viewing
 You can view the current settings in two ways.  Using a helper method show():
@@ -187,10 +189,12 @@ revive.config.network.show()
 ### Config.Watchdog
 The Revive watchdog feature has 3 settings you can modify.  The revive.config.watchdog object has three read-write variables:
 
+```
 * revive.config.watchdog.settings
 * revive.config.watchdog.pingInterval
 * revive.config.watchdog.firstResetAfter
 * revive.config.watchdog.anotherResetEvery
+```
 
 ##### Viewing
 You can view the current settings in two ways.  Using a helper method show():
