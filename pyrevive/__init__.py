@@ -1,7 +1,7 @@
 import json
 import requests
 
-VERSION = "0.0.4"
+VERSION = "0.0.5"
 METHODS = [ "GET", "POST", "PATCH" ] # Allowed HTTP methods
 
 def connect(host, key):
@@ -32,8 +32,9 @@ class Revive:
         self.host = host
         self.key  = key
         self.url  = "http://" + host
-        self.headers = { "Authorization": "Bearer " + self.key, "Content-Type": "application/json" }
-        self.version = VERSION
+
+        self.headers     = { "Authorization": "Bearer " + self.key, "Content-Type": "application/json" }
+        self.__version__ = VERSION
 
         url = "http://" + host
         headers = { "Authorization": "Bearer " + self.key, "Content-Type": "application/json" }

@@ -50,7 +50,7 @@ revive = pyrevive.connect("192.168.1.254", "authorizationKey")
 Get the current version of PyRevive
 
 ```
-print(revive.version)
+print(revive.__version__)
 ```
 
 ### Power
