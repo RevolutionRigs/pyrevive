@@ -1,7 +1,7 @@
 import json
 import requests
 
-VERSION = "0.0.5"
+VERSION = "0.0.6"
 METHODS = [ "GET", "POST", "PATCH" ] # Allowed HTTP methods
 
 def connect(host, key):
@@ -39,10 +39,16 @@ class Revive:
         url = "http://" + host
         headers = { "Authorization": "Bearer " + self.key, "Content-Type": "application/json" }
 
+        self.device = self.Device()
+
+        # Preform an auth test to make sure the device key is right
+        check = self.device.auth()
+        if "message" in check:
+            raise Exception(check["code"], check["message"])
+
         self.rig    = self.Rig()
         self.power  = self.Power()
         self.config = self.Config()
-        self.device = self.Device()
 
 
     class Connect:
@@ -121,7 +127,7 @@ class Revive:
         def auth(self):
             """Check Revive Device key"""
             payload = json.dumps({ "login": True })
-            return self.request("POST", "/v1/api/device/auth", payload)
+            return json.loads(self.request("POST", "/v1/api/device/auth", payload))
 
         def id(self):
             """Get Revive Device ID"""
